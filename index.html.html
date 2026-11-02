@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Passport to the World</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Noto+Sans:wght@400;600;700&family=Noto+Sans+Sinhala:wght@400;700&family=Noto+Sans+Arabic:wght@400;700&family=Noto+Sans+Tagalog&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#E9F0EC; --paper-2:#DCE7E1; --card:#F7FAF8; --ink:#13213F; --ink-soft:#4B5A78;
+  --cover:#17305A; --cover-ink:#F3F6FB; --gold:#B8902B; --stamp:#B8324A; --line:#C3D1C9; --good:#23785A;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1830; --paper-2:#132140; --card:#17284A; --ink:#E9EFF8; --ink-soft:#A5B3CC;
+    --cover:#0A1328; --cover-ink:#F3F6FB; --gold:#E2BE5C; --stamp:#EF6F85; --line:#2B3D61; --good:#5FCB9D;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1830; --paper-2:#132140; --card:#17284A; --ink:#E9EFF8; --ink-soft:#A5B3CC;
+  --cover:#0A1328; --cover-ink:#F3F6FB; --gold:#E2BE5C; --stamp:#EF6F85; --line:#2B3D61; --good:#5FCB9D;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{
+  margin:0;min-height:100%;color:var(--ink);background:var(--paper);
+  font-family:"Noto Sans",system-ui,-apple-system,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+  font-size:18px;line-height:1.5;
+  background-image:
+    repeating-radial-gradient(circle at 15% 20%, transparent 0 14px, color-mix(in srgb,var(--line) 45%,transparent) 14px 15px),
+    repeating-radial-gradient(circle at 85% 80%, transparent 0 14px, color-mix(in srgb,var(--line) 35%,transparent) 14px 15px);
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--cover)}
+.f-lat,.f-ph{font-family:"Noto Sans","Noto Sans Tagalog",system-ui,sans-serif}
+.f-kr{font-family:"Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR","Noto Sans CJK KR",sans-serif}
+.f-jp{font-family:"Hiragino Sans","Yu Gothic","Meiryo","Noto Sans JP","Noto Sans CJK JP",sans-serif}
+.f-lk{font-family:"Noto Sans Sinhala","Iskoola Pota","Sinhala Sangam MN",sans-serif}
+.f-ar{font-family:"Noto Sans Arabic","Segoe UI","Geeza Pro",Tahoma,sans-serif}
+.f-ru{font-family:"Noto Sans",system-ui,sans-serif}
+.display{font-family:"Bricolage Grotesque","Noto Sans",system-ui,sans-serif}
+
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--cover);color:var(--cover-ink);
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.7rem clamp(1rem,4vw,2rem)}
+.brand{display:flex;align-items:center;gap:.7rem}
+.brand svg{flex:none}
+.brand b{font-family:"Bricolage Grotesque",sans-serif;font-size:1.25rem;font-weight:750;letter-spacing:-.01em;display:block;line-height:1.1}
+.brand small{display:block;opacity:.75;font-size:.8rem}
+.ghost{background:transparent;color:inherit;border:1px solid color-mix(in srgb,var(--cover-ink) 40%,transparent);
+  border-radius:999px;padding:.4rem .9rem;font:inherit;font-size:.85rem;cursor:pointer}
+.ghost:hover{background:color-mix(in srgb,var(--cover-ink) 12%,transparent)}
+
+main{max-width:880px;margin:0 auto;padding:clamp(1rem,3vw,2rem) clamp(1rem,4vw,2rem) 3rem}
+.steps{list-style:none;display:flex;gap:.4rem;padding:0;margin:0 0 1.5rem;flex-wrap:wrap}
+.steps li{flex:1 1 0;min-width:120px;font-size:.82rem;color:var(--ink-soft);border-top:4px solid var(--line);padding-top:.4rem}
+.steps li.on{color:var(--ink);border-color:var(--gold);font-weight:600}
+.steps li.done{border-color:color-mix(in srgb,var(--gold) 55%,var(--line))}
+
+.page{background:var(--card);border:1px solid var(--line);border-radius:6px 22px 22px 6px;
+  box-shadow:inset 10px 0 0 -6px color-mix(in srgb,var(--cover) 70%,transparent), 0 18px 40px -26px rgba(10,25,60,.45);
+  padding:clamp(1.25rem,4vw,2.75rem);position:relative;overflow:hidden}
+.screen{display:none}
+.screen.on{display:block;animation:in .35s ease}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+h1{font-family:"Bricolage Grotesque",sans-serif;font-size:clamp(2rem,5.5vw,3.4rem);line-height:1.02;letter-spacing:-.025em;margin:0 0 .6rem;font-weight:800}
+h2{font-family:"Bricolage Grotesque",sans-serif;font-size:clamp(1.5rem,4vw,2.2rem);line-height:1.1;letter-spacing:-.02em;margin:0 0 .3rem;font-weight:750}
+.ko{color:var(--ink-soft);font-size:.92em}
+.lead{color:var(--ink-soft);max-width:56ch;margin:0 0 1.6rem}
+
+label.field{display:block;font-weight:600;margin-bottom:.4rem}
+input[type=text]{width:100%;font:inherit;font-size:clamp(1.3rem,3.5vw,1.7rem);padding:.75rem 1rem;border-radius:12px;
+  border:2px solid var(--line);background:var(--paper);color:var(--ink)}
+input[type=text]:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 4px color-mix(in srgb,var(--gold) 25%,transparent)}
+fieldset{border:0;padding:0;margin:1.4rem 0 0}
+legend{font-weight:600;margin-bottom:.5rem;padding:0}
+.chips{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem}
+.chips input{position:absolute;opacity:0;pointer-events:none}
+.chips label{display:block;text-align:center;padding:.8rem .5rem;border:2px solid var(--line);border-radius:12px;cursor:pointer;
+  background:var(--paper);font-weight:600;line-height:1.25}
+.chips label small{display:block;font-weight:400;color:var(--ink-soft)}
+.chips input:checked + label{border-color:var(--cover);background:var(--cover);color:var(--cover-ink)}
+.chips input:checked + label small{color:inherit;opacity:.8}
+.chips input:focus-visible + label{outline:3px solid var(--gold);outline-offset:2px}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font:inherit;font-weight:700;font-size:1.15rem;
+  border:0;border-radius:999px;padding:.95rem 1.8rem;cursor:pointer;background:var(--stamp);color:#fff;margin-top:1.6rem;
+  box-shadow:0 4px 0 color-mix(in srgb,var(--stamp) 60%,#000)}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 color-mix(in srgb,var(--stamp) 60%,#000)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn small{font-weight:400;opacity:.85}
+.btn.alt{background:var(--cover);color:var(--cover-ink);box-shadow:0 4px 0 color-mix(in srgb,var(--cover) 55%,#000)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.err{color:var(--stamp);font-weight:600;min-height:1.5em;margin:.5rem 0 0}
+
+/* roulette */
+.roulette{display:grid;place-items:center;text-align:center;padding:1rem 0}
+.flagbox{width:min(300px,70vw);aspect-ratio:3/2;border-radius:10px;overflow:hidden;box-shadow:0 0 0 1px var(--line),0 14px 30px -18px rgba(0,0,0,.6)}
+.flagbox svg{display:block;width:100%;height:100%}
+.cname{margin-top:1.2rem}
+.cname .big{font-family:"Bricolage Grotesque",sans-serif;font-size:clamp(2.2rem,7vw,3.6rem);font-weight:800;letter-spacing:-.03em;line-height:1}
+.cname .native{font-size:1.3rem;color:var(--ink-soft);margin-top:.3rem}
+.spinning .flagbox{filter:saturate(.85)}
+
+/* challenge */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(.6rem,2vw,1rem);margin-top:1.4rem}
+.opt{position:relative;min-height:150px;padding:1.1rem;border:2px solid var(--line);border-radius:14px;background:var(--paper);
+  color:var(--ink);cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;font-size:clamp(1.15rem,3vw,1.55rem);line-height:1.35}
+.opt:hover{border-color:var(--ink-soft)}
+.opt .sub{font-size:.85em;margin-top:.35rem;color:var(--ink-soft)}
+.opt .tag{position:absolute;left:.7rem;bottom:.5rem;font-size:.75rem;color:var(--ink-soft);font-family:"Noto Sans",sans-serif;opacity:0}
+.opt.wrong{border-color:var(--stamp);opacity:.55;animation:shake .4s}
+.opt.wrong .tag,.revealed .tag{opacity:1}
+.opt.right{border-color:var(--good);box-shadow:0 0 0 4px color-mix(in srgb,var(--good) 30%,transparent)}
+.opt.right .tag{opacity:1;color:var(--good);font-weight:600}
+@keyframes shake{25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-3px)}}
+.hint{margin-top:1rem;min-height:1.6em;font-weight:600}
+.hint.bad{color:var(--stamp)} .hint.good{color:var(--good)}
+
+/* result stamp */
+.result{text-align:center}
+.from{color:var(--ink-soft);margin:0 0 1rem}
+.stamp{display:inline-block;max-width:100%;padding:clamp(1.2rem,4vw,2rem) clamp(1.2rem,5vw,3rem);border:5px double var(--stamp);border-radius:22px;
+  color:var(--ink);transform:rotate(-3deg);position:relative;background:color-mix(in srgb,var(--stamp) 5%,var(--card));
+  animation:thump .5s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes thump{0%{transform:rotate(-3deg) scale(1.35);opacity:0}100%{transform:rotate(-3deg) scale(1);opacity:1}}
+.stamp .head{display:flex;align-items:center;justify-content:center;gap:.7rem;color:var(--stamp);font-weight:700}
+.stamp .head svg{width:54px;height:36px;border-radius:4px;box-shadow:0 0 0 1px var(--line)}
+.stamp .head span{font-family:"Bricolage Grotesque",sans-serif;font-size:1.3rem;letter-spacing:-.01em;text-align:left;line-height:1.1}
+.stamp .head small{display:block;font-family:"Noto Sans",sans-serif;font-weight:400;font-size:.85rem}
+.newname{font-size:clamp(3.2rem,12vw,6.2rem);line-height:1.15;font-weight:700;margin:.8rem 0 .1rem;overflow-wrap:anywhere}
+.kana{font-size:1.4rem;color:var(--ink-soft);margin-bottom:.2rem}
+.say{font-size:clamp(1.3rem,3.5vw,1.7rem);font-weight:600}
+.say em{font-style:normal;color:var(--ink-soft);font-weight:400;font-size:.75em;margin-right:.3rem}
+.meaning{margin-top:.5rem;font-size:clamp(1.1rem,3vw,1.35rem)}
+.meaning em{font-style:normal;color:var(--ink-soft);font-size:.85em;margin-right:.3rem}
+.copy{margin:1.8rem auto 0;max-width:46ch;padding:.8rem 1rem;border-radius:12px;background:var(--paper-2);display:flex;gap:.7rem;align-items:center;text-align:left}
+.copy svg{flex:none;color:var(--gold)}
+
+.confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:20}
+.confetti i{position:absolute;top:-20px;width:10px;height:14px;border-radius:2px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+
+@media (max-width:560px){
+  .grid{grid-template-columns:1fr}
+  .opt{min-height:110px}
+  .steps li{min-width:0;font-size:.72rem}
+  .brand small{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <svg width="34" height="42" viewBox="0 0 34 42" aria-hidden="true"><rect x="1" y="1" width="32" height="40" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17" cy="18" r="8" fill="none" stroke="#E2BE5C" stroke-width="2"/><path d="M9 18h16M17 10c3 3 3 13 0 16M17 10c-3 3-3 13 0 16" fill="none" stroke="#E2BE5C" stroke-width="1.5"/><path d="M10 33h14" stroke="currentColor" stroke-width="2"/></svg>
+    <div><b>Passport to the World</b><small>세계 여권 스탬프 랠리</small></div>
+  </div>
+  <button class="ghost" id="fsBtn" type="button">Full screen</button>
+</header>
+
+<main>
+  <ol class="steps" id="steps" aria-label="Progress">
+    <li data-s="1">1. Your name <span class="ko">이름</span></li>
+    <li data-s="2">2. Your country <span class="ko">나라</span></li>
+    <li data-s="3">3. Find the writing <span class="ko">글자 찾기</span></li>
+    <li data-s="4">4. New name <span class="ko">새 이름</span></li>
+  </ol>
+
+  <div class="page">
+    <!-- 1 -->
+    <section class="screen on" id="s1" aria-labelledby="t1">
+      <h1 id="t1">Where will your name take you?</h1>
+      <p class="lead">Get a random country, find its writing, and unlock your name from that country.<br><span class="ko">랜덤으로 나라를 뽑고, 그 나라의 글자를 찾으면 새 이름을 받아요!</span></p>
+      <label class="field" for="nameIn">Your name <span class="ko">이름</span></label>
+      <input type="text" id="nameIn" autocomplete="off" maxlength="30" placeholder="e.g. Batty / 김민수">
+      <fieldset>
+        <legend>Name type <span class="ko">이름 종류</span></legend>
+        <div class="chips">
+          <input type="radio" name="g" id="gf" value="f"><label for="gf">Female<small>여성</small></label>
+          <input type="radio" name="g" id="gm" value="m"><label for="gm">Male<small>남성</small></label>
+          <input type="radio" name="g" id="gn" value="n"><label for="gn">Neutral<small>중성</small></label>
+        </div>
+      </fieldset>
+      <p class="err" id="err1" role="alert"></p>
+      <button class="btn" id="go1" type="button">Get my country <small>나라 뽑기</small></button>
+    </section>
+
+    <!-- 2 -->
+    <section class="screen" id="s2" aria-labelledby="t2">
+      <div class="roulette" id="roulette">
+        <h2 id="t2">Picking your country…</h2>
+        <p class="ko" id="t2ko">나라를 뽑는 중…</p>
+        <div class="flagbox" id="flagbox"></div>
+        <div class="cname"><div class="big" id="cBig"></div><div class="native" id="cNative"></div></div>
+        <button class="btn" id="go2" type="button" hidden>Find the writing <small>글자 찾기</small></button>
+      </div>
+    </section>
+
+    <!-- 3 -->
+    <section class="screen" id="s3" aria-labelledby="t3">
+      <h2 id="t3"></h2>
+      <p class="ko" id="t3ko"></p>
+      <div class="grid" id="grid"></div>
+      <p class="hint" id="hint" role="status"></p>
+    </section>
+
+    <!-- 4 -->
+    <section class="screen result" id="s4" aria-labelledby="t4">
+      <h2 id="t4">Your new name!</h2>
+      <p class="from" id="from"></p>
+      <div class="stamp" id="stamp">
+        <div class="head" id="sHead"></div>
+        <div class="newname" id="sName"></div>
+        <div class="kana f-jp" id="sKana" hidden></div>
+        <div class="say" id="sSay"></div>
+        <div class="meaning" id="sMean"></div>
+      </div>
+      <div class="copy">
+        <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1-5L16 4l4 4L9 19l-5 1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M13 7l4 4" stroke="currentColor" stroke-width="2"/></svg>
+        <div>Copy this name onto your stamp, then take a photo!<br><span class="ko">스탬프에 새 이름을 써 주세요. 사진도 찍어 보세요!</span></div>
+      </div>
+      <button class="btn alt" id="again" type="button">Next traveler <small>다음 사람</small></button>
+    </section>
+  </div>
+</main>
+
+<div class="confetti" id="confetti" aria-hidden="true"></div>
+
+<script>
+/* ---------- Flags (simplified SVG, 30x20) ---------- */
+function star(cx,cy,R,fill){let p=[];for(let i=0;i<10;i++){const r=i%2?R*.382:R,a=-Math.PI/2+i*Math.PI/5;p.push((cx+r*Math.cos(a)).toFixed(2)+','+(cy+r*Math.sin(a)).toFixed(2))}return `<polygon points="${p.join(' ')}" fill="${fill}"/>`}
+function trigram(x,y,rot,pat){let s=`<g transform="translate(${x} ${y}) rotate(${rot})" fill="#000">`;
+  pat.forEach((solid,i)=>{const yy=(i-1)*1.05-.35;s+=solid?`<rect x="-2.1" y="${yy}" width="4.2" height=".7"/>`:`<rect x="-2.1" y="${yy}" width="1.85" height=".7"/><rect x=".25" y="${yy}" width="1.85" height=".7"/>`});return s+'</g>'}
+const FLAGS={
+  kr:()=>`<rect width="30" height="20" fill="#fff"/><g transform="rotate(33.69 15 10)"><circle cx="15" cy="10" r="5" fill="#0047A0"/><path d="M10 10A5 5 0 0 1 20 10A2.5 2.5 0 0 0 15 10A2.5 2.5 0 0 1 10 10Z" fill="#CD2E3A"/></g>`
+    +trigram(6.3,4.2,123.69,[1,1,1])+trigram(23.7,15.8,123.69,[0,0,0])+trigram(23.7,4.2,56.31,[0,1,0])+trigram(6.3,15.8,56.31,[1,0,1]),
+  lk:()=>`<rect width="30" height="20" fill="#FFBE29"/><rect x="1" y="1" width="5" height="18" fill="#00534E"/><rect x="6" y="1" width="5" height="18" fill="#EB7400"/><rect x="12" y="1" width="17" height="18" fill="#8D153A"/><circle cx="20.5" cy="10" r="3.4" fill="#FFBE29"/><circle cx="14" cy="3" r=".9" fill="#FFBE29"/><circle cx="27" cy="3" r=".9" fill="#FFBE29"/><circle cx="14" cy="17" r=".9" fill="#FFBE29"/><circle cx="27" cy="17" r=".9" fill="#FFBE29"/>`,
+  ph:()=>`<rect width="30" height="10" fill="#0038A8"/><rect y="10" width="30" height="10" fill="#CE1126"/><polygon points="0,0 17.3,10 0,20" fill="#fff"/><circle cx="5.8" cy="10" r="2" fill="#FCD116"/>`+star(1.9,2.4,.9,'#FCD116')+star(1.9,17.6,.9,'#FCD116')+star(14.2,10,.9,'#FCD116'),
+  vn:()=>`<rect width="30" height="20" fill="#DA251D"/>`+star(15,10.4,6,'#FFFF00'),
+  jp:()=>`<rect width="30" height="20" fill="#fff"/><circle cx="15" cy="10" r="6" fill="#BC002D"/>`,
+  fr:()=>`<rect width="10" height="20" fill="#002654"/><rect x="10" width="10" height="20" fill="#fff"/><rect x="20" width="10" height="20" fill="#CE1126"/>`,
+  ru:()=>`<rect width="30" height="6.67" fill="#fff"/><rect y="6.67" width="30" height="6.67" fill="#0039A6"/><rect y="13.33" width="30" height="6.67" fill="#D52B1E"/>`,
+  us:()=>{let s='<rect width="30" height="20" fill="#fff"/>';const h=20/13;for(let i=0;i<13;i+=2)s+=`<rect y="${(i*h).toFixed(2)}" width="30" height="${h.toFixed(2)}" fill="#B22234"/>`;
+    s+=`<rect width="12" height="${(7*h).toFixed(2)}" fill="#3C3B6E"/>`;for(let r=0;r<5;r++)for(let c=0;c<6;c++)s+=`<circle cx="${1+c*2}" cy="${1.1+r*2.05}" r=".38" fill="#fff"/>`;return s},
+  br:()=>`<rect width="30" height="20" fill="#009C3B"/><polygon points="2.2,10 15,2 27.8,10 15,18" fill="#FFDF00"/><circle cx="15" cy="10" r="4.4" fill="#002776"/><path d="M10.8 8.9Q15.5 7.6 19.3 11" stroke="#fff" stroke-width=".7" fill="none"/>`,
+  eg:()=>`<rect width="30" height="6.67" fill="#CE1126"/><rect y="6.67" width="30" height="6.67" fill="#fff"/><rect y="13.33" width="30" height="6.67" fill="#000"/><path d="M15 7.6l1.6 1.2-.4 2.6H13.8l-.4-2.6z" fill="#C09300"/><path d="M12.3 8.6l1.3.6.3 2-1.6-.8zM17.7 8.6l-1.3.6-.3 2 1.6-.8z" fill="#C09300"/>`
+};
+const flag=id=>`<svg viewBox="0 0 30 20" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Flag">${FLAGS[id]()}</svg>`;
+
+/* ---------- Country data ----------
+   Entry formats:  "script|roman|pronunciation|meaning"  (non-Latin scripts)
+                   "script|roman|pronunciation|meaning|kana"  (Japan)
+                   "name|pronunciation|meaning"  (Latin-alphabet countries)            */
+const C=[
+ {id:'kr',en:'Korea',ko:'한국',nat:'대한민국',font:'f-kr',latin:false,lang:'ko',
+  greet:'안녕하세요!<br>만나서 반가워요.',
+  f:["빛나|Bitna|Bit-na|Shining","아름|Areum|A-reum|Beautiful","슬기|Seulgi|Seul-gi|Wisdom","나래|Narae|Na-rae|Wings","미리내|Mirinae|Mi-ri-nae|The Milky Way","다솜|Dasom|Da-som|Love","소리|Sori|So-ri|Sound","가을|Gaeul|Ga-eul|Autumn","진주|Jinju|Jin-ju|Pearl","윤슬|Yunseul|Yun-seul|Sunlight sparkling on water","초롱|Chorong|Cho-rong|Bright, sparkling eyes","이슬|Iseul|I-seul|Morning dew","보배|Bobae|Bo-bae|Treasure","지혜|Jihye|Ji-hye|Wise and clever"],
+  m:["가람|Garam|Ga-ram|River","한결|Hangyeol|Han-gyeol|Always steady and true","마루|Maru|Ma-ru|Mountain top","산|San|San|Mountain","솔|Sol|Sol|Pine tree","태양|Taeyang|Tae-yang|The sun","힘찬|Himchan|Him-chan|Full of energy","우주|Uju|U-ju|The universe","이든|Ideun|I-deun|Good and kind","바름|Bareum|Ba-reum|Upright and honest"],
+  n:["하늘|Haneul|Ha-neul|Sky","바다|Bada|Ba-da|Sea","누리|Nuri|Nu-ri|The world","노을|Noeul|No-eul|Sunset glow","다온|Daon|Da-on|Good things will come","도담|Dodam|Do-dam|Growing up healthy","라온|Raon|Ra-on|Joyful","한별|Hanbyeol|Han-byeol|One bright star","보람|Boram|Bo-ram|A worthwhile reward","온유|Onyu|On-yu|Gentle","우리|Uri|U-ri|Us, together","푸름|Pureum|Pu-reum|Fresh green","한빛|Hanbit|Han-bit|One great light","새봄|Saebom|Sae-bom|New spring","진솔|Jinsol|Jin-sol|Honest and sincere"]},
+ {id:'lk',en:'Sri Lanka',ko:'스리랑카',nat:'ශ්\u200dරී ලංකාව',font:'f-lk',latin:false,lang:'si',
+  greet:'ආයුබෝවන්!<br>ඔබට කොහොමද?',
+  f:["භාග්\u200dයා|Bhagya|Baag-yaa|Good fortune","චාන්දනී|Chandani|Chaan-da-nee|Moonlight","දිලිනි|Dilini|Di-li-ni|Shining","හිරුණි|Hiruni|Hi-ru-ni|Like the sun","කුමාරි|Kumari|Ku-maa-ri|Princess","මාලිනී|Malini|Maa-li-nee|Wearing a flower garland","අමාලි|Amali|A-maa-li|Pure, spotless","තරුෂි|Tharushi|Ta-ru-shi|Like a star","රශ්මි|Rashmi|Rash-mi|Ray of light","පියුමි|Piyumi|Pi-yu-mi|Lotus flower","වාසනා|Wasana|Waa-sa-naa|Luck","සඳමාලි|Sandamali|San-da-maa-li|Garland of the moon","යශෝධරා|Yashodhara|Ya-sho-da-raa|Bearer of glory","ඕෂධී|Oshadhi|O-sha-dee|Healing herb"],
+  m:["නුවන්|Nuwan|Nu-wan|Wisdom","රුවන්|Ruwan|Ru-wan|Gem","තරිඳු|Tharindu|Ta-rin-du|The moon, king of the stars","දිනේෂ්|Dinesh|Di-naysh|The sun","ප්\u200dරදීප්|Pradeep|Pra-deep|Lamp, light","ලහිරු|Lahiru|La-hi-ru|Morning sun","මහේෂ්|Mahesh|Ma-haysh|Great lord","කවින්ද|Kavinda|Ka-vin-da|Chief of poets","ඉසුරු|Isuru|I-su-ru|Prosperity","බුද්ධික|Buddhika|Bud-di-ka|Wise","විරාජ්|Viraj|Vi-raaj|Radiant","හසිත|Hasitha|Ha-si-ta|Smiling","සහන්|Sahan|Sa-han|Comfort, relief","ජයන්ත|Jayantha|Ja-yan-ta|Victorious"],
+  n:[]},
+ {id:'ph',en:'Philippines',ko:'필리핀',nat:'Pilipinas',font:'f-ph',latin:true,lang:'fil',
+  greet:'Mabuhay! Kumusta ka?<div class="sub" lang="tl">ᜋᜊᜓᜑᜌ᜔</div>',
+  f:["Ligaya|Li-ga-ya|Joy","Mayumi|Ma-yu-mi|Gentle and kind","Luningning|Lu-ning-ning|Brilliance","Dalisay|Da-li-sai|Pure","Hiraya|Hi-ra-ya|The fruit of your dreams","Marikit|Ma-ri-kit|Beautiful","Sampaguita|Sam-pa-gi-ta|Jasmine, the national flower","Perlas|Per-las|Pearl","Mutya|Moot-ya|Precious pearl","Dayang|Da-yang|Princess, noble lady"],
+  m:["Bayani|Ba-ya-ni|Hero","Datu|Da-tu|Chief","Dakila|Da-ki-la|Great and noble","Makisig|Ma-ki-sig|Handsome and dashing","Malakas|Ma-la-kas|Strong","Lakan|La-kan|Nobleman","Magiting|Ma-gi-ting|Brave","Tagumpay|Ta-gum-pai|Victory","Kidlat|Kid-lat|Lightning","Habagat|Ha-ba-gat|Southwest monsoon wind","Bagani|Ba-ga-ni|Warrior","Agila|A-gi-la|Eagle"],
+  n:["Tala|Ta-la|Bright star","Bituin|Bi-tu-in|Star","Diwa|Di-wa|Spirit","Araw|A-rau|Sun","Sinag|Si-nag|Ray of light","Ulan|U-lan|Rain","Payapa|Pa-ya-pa|Peaceful","Ilaw|I-lau|Light","Pag-asa|Pag-a-sa|Hope","Kalinaw|Ka-li-nau|Peace","Amihan|A-mi-han|Cool northeast wind"]},
+ {id:'vn',en:'Vietnam',ko:'베트남',nat:'Việt Nam',font:'f-lat',latin:true,lang:'vi',
+  greet:'Xin chào!<br>Rất vui được gặp bạn.',
+  f:["Lan|Lahn|Orchid","Mai|My|Apricot blossom","Hoa|Hwah|Flower","Ngọc|Ngawk|Jade","Hương|Huh-uhng|Fragrance","Yến|Yen|Swallow (the bird)","Châu|Chow|Pearl","Tuyết|Twee-et|Snow","Diệp|Zee-ep|Leaf","Phương|Fuh-uhng|Fragrant","Bích|Bik|Jade green","Quỳnh|Kwing|Night-blooming flower","Uyên|Wee-en|Graceful","Sương|Suh-uhng|Dew","Oanh|Wahng|Oriole (songbird)"],
+  m:["Bảo|Bow|Treasure","Dũng|Zoong|Brave","Hùng|Hoong|Hero","Nam|Nahm|South","Phúc|Fook|Blessing","Quang|Kwahng|Bright light","Sơn|Suhn|Mountain","Tuấn|Twun|Talented and handsome","Long|Lawng|Dragon","Khang|Kahng|Healthy","Huy|Hwee|Glorious","Đức|Duk|Virtue","Thành|Tahn|Success","Vinh|Vin|Glory","Trung|Choong|Loyal","Lâm|Lum|Forest","Hải|Hai|Ocean","Cường|Kuh-uhng|Strong","Kiên|Kee-en|Steadfast","Việt|Vee-et|Excellent"],
+  n:["Minh|Ming|Bright, intelligent","An|Ahn|Peace, safety","Linh|Ling|Spirit, soul","Bình|Bin|Peaceful","Thiên|Tee-en|Sky","Giang|Zahng|River","Kim|Kim|Gold","Xuân|Swun|Spring","Anh|Ain|Bright, brilliant"]},
+ {id:'jp',en:'Japan',ko:'일본',nat:'日本',font:'f-jp',latin:false,lang:'ja',
+  greet:'こんにちは！<br>はじめまして。',
+  f:["桜|Sakura|Sa-ku-ra|Cherry blossom|さくら","花|Hana|Ha-na|Flower|はな","美咲|Misaki|Mi-sa-ki|Beautiful blossom|みさき","楓|Kaede|Ka-e-de|Maple tree|かえで","千夏|Chinatsu|Chi-na-tsu|A thousand summers|ちなつ","恵|Megumi|Me-gu-mi|Blessing|めぐみ","絵美|Emi|E-mi|Beautiful picture|えみ","愛|Ai|Ai|Love|あい","夢|Yume|Yu-me|Dream|ゆめ","七海|Nanami|Na-na-mi|Seven seas|ななみ","琴音|Kotone|Ko-to-ne|Sound of the koto harp|ことね","舞|Mai|Ma-i|Dance|まい","小春|Koharu|Ko-ha-ru|Little spring|こはる","静|Shizuka|Shi-zu-ka|Quiet and calm|しずか","鈴|Suzu|Su-zu|Bell|すず","智子|Tomoko|To-mo-ko|Wise child|ともこ","雪|Yuki|Yu-ki|Snow|ゆき","茜|Akane|A-ka-ne|Deep red|あかね","莉子|Riko|Ri-ko|Jasmine child|りこ"],
+  m:["大翔|Hiroto|Hi-ro-to|Soaring high|ひろと","蓮|Ren|Ren|Lotus|れん","翔太|Shota|Sho-ta|Soaring and strong|しょうた","大輝|Daiki|Dai-ki|Great radiance|だいき","健太|Kenta|Ken-ta|Healthy and strong|けんた","拓海|Takumi|Ta-ku-mi|Opening up the sea|たくみ","陸|Riku|Ri-ku|Land|りく","海斗|Kaito|Kai-to|Sea and stars|かいと","春樹|Haruki|Ha-ru-ki|Spring tree|はるき","直樹|Naoki|Na-o-ki|Honest tree|なおき","剛|Tsuyoshi|Tsu-yo-shi|Strong|つよし","勇気|Yuki|Yu-ki|Courage|ゆうき","武|Takeshi|Ta-ke-shi|Warrior|たけし","一郎|Ichiro|I-chi-ro|First son|いちろう","博|Hiroshi|Hi-ro-shi|Widely learned|ひろし","学|Manabu|Ma-na-bu|Learning|まなぶ","渉|Wataru|Wa-ta-ru|Crossing over|わたる","雅人|Masato|Ma-sa-to|Elegant person|まさと","颯|Hayate|Ha-ya-te|Swift wind|はやて","亮|Ryo|Ryo|Clear and bright|りょう","和也|Kazuya|Ka-zu-ya|Peace and harmony|かずや"],
+  n:["葵|Aoi|A-o-i|Hollyhock flower|あおい","光|Hikari|Hi-ka-ri|Light|ひかり","凛|Rin|Rin|Dignified|りん","優|Yu|Yu|Gentle|ゆう","空|Sora|So-ra|Sky|そら","翼|Tsubasa|Tsu-ba-sa|Wings|つばさ","永遠|Towa|To-wa|Eternity|とわ","渚|Nagisa|Na-gi-sa|Seashore|なぎさ","晴|Haru|Ha-ru|Clear, sunny sky|はる","歩|Ayumu|A-yu-mu|Step forward|あゆむ","誠|Makoto|Ma-ko-to|Sincerity|まこと","朝日|Asahi|A-sa-hi|Morning sun|あさひ"]},
+ {id:'fr',en:'France',ko:'프랑스',nat:'France',font:'f-lat',latin:true,lang:'fr',
+  greet:'Bonjour ! Ça va ?<br>Enchanté !',
+  f:["Amélie|Ah-may-lee|Hardworking","Brigitte|Bree-zheet|Strength","Chloé|Klo-ay|Young green shoot","Fleur|Flur|Flower","Juliette|Zhoo-lee-et|Youthful","Margaux|Mar-go|Pearl","Océane|O-say-ahn|Ocean","Rose|Roz|Rose","Sophie|So-fee|Wisdom","Véronique|Vay-ro-neek|True image","Hélène|Ay-len|Bright light","Nathalie|Na-ta-lee|Born on Christmas","Pauline|Po-leen|Small and humble","Delphine|Del-feen|Dolphin","Aurore|O-ror|Dawn","Estelle|Es-tel|Star","Yvette|Ee-vet|Yew tree","Zoé|Zo-ay|Life","Gabrielle|Ga-bree-el|God is my strength","Inès|Ee-nes|Pure"],
+  m:["Benoît|Ben-wah|Blessed","Clément|Klay-mahn|Gentle and kind","Damien|Da-myan|To tame","Étienne|Ay-tyen|Crown","Félix|Fay-leeks|Lucky, happy","Gaspard|Gas-par|Treasurer","Hugo|U-go|Mind, intellect","Jules|Zhool|Youthful","Léon|Lay-on|Lion","Louis|Loo-ee|Famous warrior","Olivier|O-lee-vyay|Olive tree","Pierre|Pyair|Stone","Raphaël|Ra-fa-el|God heals","Sébastien|Say-bas-tyen|Respected","Victor|Veek-tor|Winner","Xavier|Gza-vyay|New house","Yves|Eev|Yew tree","Arthur|Ar-tur|Bear","Nicolas|Nee-ko-lah|Victory of the people","Théo|Tay-o|Divine gift"],
+  n:["Camille|Ka-mee|Helper at ceremonies","Dominique|Do-mee-neek|Belonging to the Lord","Sacha|Sa-sha|Defender of people","Morgan|Mor-gahn|Born of the sea","Alix|A-leeks|Noble","Charlie|Shar-lee|Free person","Lou|Loo|Famous in battle"]},
+ {id:'ru',en:'Russia',ko:'러시아',nat:'Россия',font:'f-ru',latin:false,lang:'ru',
+  greet:'Здравствуйте!<br>Очень приятно.',
+  f:["Анастасия|Anastasia|A-na-sta-see-ya|New life","Вера|Vera|Vye-ra|Faith","Надежда|Nadezhda|Na-dyezh-da|Hope","Любовь|Lyubov|Lyoo-bov|Love","Ирина|Irina|I-ree-na|Peace","Елена|Yelena|Ye-lye-na|Bright light","Мила|Mila|Mee-la|Dear, sweet","Светлана|Svetlana|Svet-la-na|Light, bright","Дарья|Darya|Dar-ya|Possessing goodness","Ксения|Ksenia|Ksye-nee-ya|Hospitality","Зоя|Zoya|Zo-ya|Life","Галина|Galina|Ga-lee-na|Calm","Екатерина|Yekaterina|Ye-ka-tye-ree-na|Pure","Василиса|Vasilisa|Va-si-lee-sa|Queen","Богдана|Bogdana|Bog-da-na|Given by God","Юлия|Yulia|Yoo-lee-ya|Youthful","Фаина|Faina|Fa-ee-na|Shining","Тамара|Tamara|Ta-ma-ra|Date palm","Рада|Rada|Ra-da|Joyful","Ольга|Olga|Ol-ga|Holy"],
+  m:["Александр|Aleksandr|A-lek-sandr|Defender of people","Борис|Boris|Ba-rees|Fighter","Владимир|Vladimir|Vla-dee-meer|Ruler of peace","Дмитрий|Dmitry|Dmee-tree|Of the earth","Иван|Ivan|I-vahn|God is gracious","Лев|Lev|Lyef|Lion","Максим|Maksim|Mak-seem|The greatest","Николай|Nikolai|Ni-ka-lai|Victory of the people","Олег|Oleg|A-lyeg|Holy","Пётр|Pyotr|Pyotr|Stone","Тимофей|Timofei|Ti-ma-fyei|Honoring God","Фёдор|Fyodor|Fyo-dor|Gift of God","Юрий|Yuri|Yoo-ree|Farmer","Григорий|Grigory|Gri-go-ree|Watchful","Евгений|Yevgeny|Yev-gye-nee|Noble","Кирилл|Kirill|Ki-reel|Lord","Виктор|Viktor|Veek-tor|Winner","Захар|Zakhar|Za-khar|God remembers","Богдан|Bogdan|Bog-dahn|Given by God","Руслан|Ruslan|Rus-lahn|Lion","Святослав|Svyatoslav|Svya-ta-slav|Holy glory","Тихон|Tikhon|Tee-khon|Lucky"],
+  n:["Саша|Sasha|Sa-sha|Defender of people","Женя|Zhenya|Zhe-nya|Noble","Валя|Valya|Va-lya|Strong and healthy","Слава|Slava|Sla-va|Glory"]},
+ {id:'us',en:'USA',ko:'미국',nat:'United States',font:'f-lat',latin:true,lang:'en',
+  greet:'Hello!<br>Nice to meet you!',
+  f:["Amber|Am-ber|Amber gemstone","Bella|Bel-la|Beautiful","Daisy|Day-zee|Daisy flower","Emily|Em-i-lee|Hardworking","Faith|Fayth|Faith","Grace|Grays|Grace","Hope|Hohp|Hope","Ivy|Eye-vee|Ivy plant","Joy|Joy|Joy","Lily|Li-lee|Lily flower","Olivia|O-li-vee-a|Olive tree","Ruby|Roo-bee|Red gemstone","Stella|Stel-la|Star","Violet|Vy-o-let|Violet flower","Willow|Wil-lo|Willow tree","Nora|Nor-a|Light","Penelope|Pe-nel-o-pee|Weaver","Autumn|Aw-tum|Autumn","Zoey|Zo-ee|Life","Melody|Mel-o-dee|Song"],
+  m:["Benjamin|Ben-ja-min|Son of the right hand","Caleb|Kay-leb|Whole-hearted","Daniel|Dan-yel|God is my judge","Ethan|Ee-than|Strong and firm","Finn|Fin|Fair","Henry|Hen-ree|Ruler of the home","Isaac|Eye-zak|Laughter","Jack|Jak|God is gracious","Leo|Lee-o|Lion","Mason|May-son|Stone worker","Nathan|Nay-than|Gift","Oliver|Ol-i-ver|Olive tree","Patrick|Pat-rik|Nobleman","Ryan|Ry-an|Little king","Samuel|Sam-yoo-el|God has heard","Tyler|Ty-ler|Tile maker","Vincent|Vin-sent|Conquering","William|Wil-yam|Determined protector","Austin|Aw-stin|Great, magnificent","Dylan|Dil-an|Son of the sea","Zachary|Zak-a-ree|God remembers","Gavin|Ga-vin|White hawk"],
+  n:["Jordan|Jor-dan|Flowing down","Taylor|Tay-lor|Tailor","Avery|Ay-ver-ee|Wise ruler","Morgan|Mor-gan|Born of the sea","Parker|Par-ker|Park keeper","Quinn|Kwin|Wise","Skyler|Sky-ler|Scholar","Charlie|Char-lee|Free person","Casey|Kay-see|Watchful","Rowan|Ro-an|Little red one","Emerson|Em-er-son|Brave","Harper|Har-per|Harp player","Logan|Lo-gan|Little hollow","Dakota|Da-ko-ta|Friend, ally","Sage|Sayj|Wise","River|Ri-ver|River","Bailey|Bay-lee|Steward"]},
+ {id:'br',en:'Brazil',ko:'브라질',nat:'Brasil',font:'f-lat',latin:true,lang:'pt',
+  greet:'Olá! Tudo bem?<br>Muito prazer!',
+  f:["Ana|A-na|Grace","Beatriz|Be-a-treez|She who brings happiness","Bruna|Broo-na|Brown-haired","Clara|Kla-ra|Bright, clear","Fernanda|Fer-nan-da|Brave traveler","Flor|Flor|Flower","Gabriela|Ga-bree-e-la|God is my strength","Helena|E-le-na|Bright light","Isadora|Ee-za-do-ra|Gift of Isis","Joana|Zho-a-na|God is gracious","Luiza|Loo-ee-za|Famous warrior","Manuela|Ma-noo-e-la|God is with us","Marina|Ma-ree-na|Of the sea","Natália|Na-ta-lya|Born on Christmas","Paula|Pow-la|Small and humble","Rafaela|Ha-fa-e-la|God heals","Sofia|So-fee-a|Wisdom","Valentina|Va-len-chee-na|Strong and healthy","Vitória|Vee-to-rya|Victory","Yasmin|Yas-meen|Jasmine","Alice|A-lee-see|Noble","Iara|Ee-a-ra|Lady of the waters"],
+  m:["Arthur|Ar-toor|Bear","Bernardo|Ber-nar-doo|Brave as a bear","Davi|Da-vee|Beloved","Enzo|En-zo|Ruler of the home","Felipe|Fe-lee-pee|Friend of horses","Heitor|Ay-tor|Steadfast","João|Zhwow|God is gracious","Lucas|Loo-kas|Bringer of light","Mateus|Ma-te-oos|Gift of God","Nicolas|Nee-ko-las|Victory of the people","Otávio|O-ta-vyo|The eighth","Pedro|Pe-dro|Stone","Rafael|Ha-fa-el|God heals","Samuel|Sa-moo-el|God has heard","Tomás|To-mas|Twin","Vicente|Vee-sen-chee|Conquering","Kauã|Ka-oo-ang|Hawk","Ubirajara|Oo-bee-ra-zha-ra|Lord of the spear"],
+  n:["Ariel|A-ree-el|Lion of God","Sol|Sol|Sun","Alex|A-leks|Defender","Dani|Da-nee|God is my judge","Rafa|Ha-fa|God heals","Gabi|Ga-bee|God is my strength"]},
+ {id:'eg',en:'Egypt',ko:'이집트',nat:'مصر',font:'f-ar',latin:false,lang:'ar',rtl:true,
+  greet:'أهلاً وسهلاً!<br>تشرفنا.',
+  f:["أمل|Amal|A-mal|Hope","فرح|Farah|Fa-rah|Joy","ياسمين|Yasmin|Yas-meen|Jasmine","سلمى|Salma|Sal-ma|Peaceful","ليلى|Layla|Lay-la|Night","هدى|Hoda|Ho-da|Guidance","جميلة|Gamila|Ga-mee-la|Beautiful","منى|Mona|Mo-na|Wish","سارة|Sara|Sa-ra|Princess","زهرة|Zahra|Zah-ra|Blossom","بسمة|Basma|Bas-ma|Smile","حنان|Hanan|Ha-nan|Tenderness","إيمان|Iman|Ee-man|Faith","كريمة|Karima|Ka-ree-ma|Generous","ريم|Reem|Reem|White gazelle","وردة|Warda|War-da|Rose","غادة|Ghada|Gha-da|Graceful young woman","وفاء|Wafaa|Wa-fa|Loyalty","يارا|Yara|Ya-ra|Little butterfly","داليا|Dalia|Da-lya|Dahlia flower"],
+  m:["أحمد|Ahmed|Ah-med|Most praised","باسم|Bassem|Ba-sem|Smiling","كريم|Karim|Ka-reem|Generous","عمر|Omar|O-mar|Long life","يوسف|Youssef|Yoo-sef|God will increase","طارق|Tarek|Ta-rek|Morning star","سامي|Sami|Sa-mee|Elevated, noble","هشام|Hisham|Hi-sham|Generosity","محمود|Mahmoud|Mah-mood|Praised","نبيل|Nabil|Na-beel|Noble","فارس|Fares|Fa-res|Knight","رامي|Rami|Ra-mee|Archer","جمال|Gamal|Ga-mal|Beauty","ضياء|Diaa|Dee-a|Brightness","وليد|Walid|Wa-leed|Newborn","زياد|Ziad|Zee-ad|Growth","عادل|Adel|A-del|Fair and just","حسام|Hossam|Ho-sam|Sword","ياسر|Yasser|Ya-ser|Prosperous","بدر|Badr|Badr|Full moon","شريف|Sherif|She-reef|Honorable","مازن|Mazen|Ma-zen|Rain clouds"],
+  n:["نور|Nour|Noor|Light","صباح|Sabah|Sa-bah|Morning","إحسان|Ihsan|Ih-san|Kindness"]}
+];
+
+function parse(e){const p=e.split('|');return p.length===3?{s:p[0],r:p[0],p:p[1],m:p[2]}:{s:p[0],r:p[1],p:p[2],m:p[3],k:p[4]}}
+
+/* ---------- Sound matching ---------- */
+const INI=['g','kk','n','d','tt','r','m','b','pp','s','ss','','j','jj','ch','k','t','p','h'];
+const MED=['a','ae','ya','eo','e','yeo','o','wa','wae','oe','yo','u','wo','we','wi','yu','eu','ui','i'];
+const isHangul=c=>{const x=c.codePointAt(0);return x>=0xAC00&&x<=0xD7A3};
+function latinKey(s){return s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[đĐ]/g,'d').toLowerCase().replace(/[^a-z]/g,'').slice(0,2)}
+function hangulKey(c){const i=c.codePointAt(0)-0xAC00;return (INI[Math.floor(i/588)]+MED[Math.floor((i%588)/28)]).slice(0,2)}
+function userKey(raw){
+  const t=raw.trim();if(!t)return '';
+  const chars=[...t.replace(/\s+/g,'')];
+  if(isHangul(chars[0])){const hs=chars.filter(isHangul);return hangulKey(hs.length>=3?hs[1]:hs[0])} // 3-syllable Korean names: use the given name
+  return latinKey(t.split(/\s+/)[0]);
+}
+const GROUP={b:'P',p:'P',v:'P',f:'P',d:'T',t:'T',g:'K',k:'K',c:'K',q:'K',s:'S',z:'S',x:'S',j:'J',y:'J',h:'H',l:'L',r:'L',m:'M',n:'M',w:'W',a:'V',e:'V',i:'V',o:'V',u:'V'};
+function score(u,n){if(!u||!n)return 0;if(u[0]===n[0])return (u[1]&&u[1]===n[1])?4:3;if(GROUP[u[0]]&&GROUP[u[0]]===GROUP[n[0]])return 2;return 0}
+const rand=a=>a[Math.floor(Math.random()*a.length)];
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+function pickName(country,g,raw){
+  let list=g==='n'?(country.n.length>=3?country.n:country.f.concat(country.m,country.n)):country[g];
+  list=list.map(parse);
+  const u=userKey(raw);let best=0,pool=[];
+  list.forEach(x=>{const sc=score(u,latinKey(x.r));if(sc>best){best=sc;pool=[x]}else if(sc===best&&sc>0)pool.push(x)});
+  return best>0?rand(pool):rand(list);
+}
+
+/* ---------- Flow ---------- */
+const $=id=>document.getElementById(id);
+let state={name:'',g:'',country:null,last:null,tries:0};
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function show(n){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id==='s'+n));
+  document.querySelectorAll('#steps li').forEach(li=>{const s=+li.dataset.s;li.classList.toggle('on',s===n);li.classList.toggle('done',s<n)});
+  window.scrollTo({top:0,behavior:reduce?'auto':'smooth'});
+}
+
+function start(){
+  const name=$('nameIn').value.trim();const g=(document.querySelector('input[name=g]:checked')||{}).value;
+  if(!name){$('err1').textContent='Type your name first. / 이름을 입력해 주세요.';$('nameIn').focus();return}
+  if(!g){$('err1').textContent='Choose a name type. / 이름 종류를 골라 주세요.';return}
+  $('err1').textContent='';state.name=name;state.g=g;
+  let pool=C.filter(c=>c!==state.last);state.country=rand(pool);state.last=state.country;
+  show(2);spin();
+}
+$('go1').onclick=start;
+$('nameIn').addEventListener('keydown',e=>{if(e.key==='Enter')start()});
+
+function setCountry(c){$('flagbox').innerHTML=flag(c.id);$('cBig').textContent=c.en;$('cNative').innerHTML='';
+  const n=document.createElement('span');n.className=c.font;n.lang=c.lang;n.textContent=c.nat+'  ';const k=document.createElement('span');k.textContent=c.ko;$('cNative').append(n,k)}
+function spin(){
+  const target=state.country;$('go2').hidden=true;$('t2').textContent='Picking your country…';$('t2ko').textContent='나라를 뽑는 중…';
+  $('roulette').classList.add('spinning');
+  if(reduce){land();return}
+  let seq=[];for(let i=0;i<16;i++)seq.push(C[i%C.length]);seq=shuffle(seq);seq.push(target);
+  let i=0;(function tick(){setCountry(seq[i]);i++;if(i<seq.length)setTimeout(tick,55+Math.pow(i/seq.length,3)*420);else land()})();
+  function land(){setCountry(target);$('roulette').classList.remove('spinning');
+    $('t2').textContent='You’re going to '+target.en+'!';$('t2ko').textContent=target.ko+'(으)로 떠나요!';$('go2').hidden=false;$('go2').focus()}
+}
+$('go2').onclick=()=>{buildChallenge();show(3)};
+
+function buildChallenge(){
+  const t=state.country;state.tries=0;
+  const LANG={kr:'Korean',lk:'Sinhala (Sri Lanka)',ph:'Filipino (Philippines)',vn:'Vietnamese',jp:'Japanese',fr:'French',ru:'Russian',us:'English (USA)',br:'Portuguese (Brazil)',eg:'Arabic (Egypt)'};
+  $('t3').textContent='Which one is written in '+LANG[t.id]+'?';
+  $('t3ko').textContent=t.ko+'의 글자를 찾아보세요!';
+  $('hint').textContent='';$('hint').className='hint';
+  let latin=t.latin?1:0,picks=[t];
+  for(const o of shuffle(C.filter(c=>c!==t))){if(picks.length===4)break;if(o.latin&&latin>=2)continue;if(o.latin)latin++;picks.push(o)}
+  const grid=$('grid');grid.innerHTML='';grid.classList.remove('revealed');
+  shuffle(picks).forEach(c=>{
+    const b=document.createElement('button');b.type='button';b.className='opt '+c.font;b.lang=c.lang;if(c.rtl)b.dir='rtl';
+    b.innerHTML='<div>'+c.greet+'</div><span class="tag" dir="ltr">'+c.en+'</span>';
+    b.onclick=()=>choose(b,c);grid.appendChild(b);
+  });
+}
+function choose(b,c){
+  if(b.classList.contains('wrong')||$('grid').classList.contains('revealed'))return;
+  if(c===state.country){
+    b.classList.add('right');$('grid').classList.add('revealed');
+    $('hint').textContent='Correct! / 정답!';$('hint').className='hint good';
+    setTimeout(result,reduce?300:1100);
+  }else{
+    b.classList.add('wrong');state.tries++;
+    $('hint').className='hint bad';
+    $('hint').textContent='Not this one. That’s '+c.en+'. Try again! / 다시 해 보세요!';
+  }
+}
+
+function result(){
+  const c=state.country,n=pickName(c,state.g,state.name);
+  $('from').textContent=state.name+' → '+n.r;
+  $('sHead').innerHTML=flag(c.id)+'<span>'+c.en+'<small>'+c.ko+'</small></span>';
+  const nm=$('sName');nm.className='newname '+c.font;nm.lang=c.lang;nm.dir=c.rtl?'rtl':'ltr';nm.textContent=n.s;
+  const k=$('sKana');if(n.k){k.hidden=false;k.lang='ja';k.textContent=n.k}else k.hidden=true;
+  $('sSay').innerHTML='';const e1=document.createElement('em');e1.textContent='Say it';$('sSay').append(e1,document.createTextNode(n.s===n.r?n.p:n.r+' ('+n.p+')'));
+  $('sMean').innerHTML='';const e2=document.createElement('em');e2.textContent='Meaning';$('sMean').append(e2,document.createTextNode('“'+n.m+'”'));
+  const st=$('stamp');st.style.animation='none';void st.offsetWidth;st.style.animation='';
+  show(4);confetti();
+}
+$('again').onclick=()=>{$('nameIn').value='';document.querySelectorAll('input[name=g]').forEach(r=>r.checked=false);show(1);$('nameIn').focus()};
+
+function confetti(){
+  if(reduce)return;const box=$('confetti');box.innerHTML='';
+  const cols=['#B8324A','#E2BE5C','#17305A','#23785A','#0047A0','#EB7400'];
+  for(let i=0;i<70;i++){const p=document.createElement('i');p.style.left=Math.random()*100+'vw';p.style.background=rand(cols);
+    p.style.animationDuration=(1.8+Math.random()*1.6)+'s';p.style.animationDelay=(Math.random()*.4)+'s';p.style.transform='rotate('+Math.random()*360+'deg)';box.appendChild(p)}
+  setTimeout(()=>box.innerHTML='',4000);
+}
+
+$('fsBtn').onclick=()=>{try{if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen()}catch(e){}};
+document.addEventListener('fullscreenchange',()=>{$('fsBtn').textContent=document.fullscreenElement?'Exit full screen':'Full screen'});
+</script>
+</body>
+</html>
